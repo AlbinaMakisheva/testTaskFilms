@@ -52,7 +52,7 @@ function FilmDetailsComp({ film, updateDetails, filmdb, setFilmdb }) {
                 <Item.Header as="h3" style={{ fontWeight: "bold" }}>
                   {film.title}
                 </Item.Header>
-                <Item.Description>Description: {film.plot} </Item.Description>
+                <Item.Description><b>Description:</b>{film.plot} </Item.Description>
                 <Item.Extra>
                   <Rating
                     icon="star"
@@ -61,12 +61,12 @@ function FilmDetailsComp({ film, updateDetails, filmdb, setFilmdb }) {
                   />
                   <p style={{ marginTop: "0.5em" }}>
                     {" "}
-                    Genre: {film.genre.join(", ")}{" "}
+                    <b>Genre:</b> {film.genre.join(", ")}{" "}
                   </p>
                   <p> {film.year} year</p>
-                  <p> Runtime: {film.runtime}</p>
-                  <p> County: {film.country}</p>
-                  <p> Actors: {film.actors}</p>
+                  <p> <b>Runtime:</b> {film.runtime}</p>
+                  <p> <b>County:</b> {film.country}</p>
+                  <p> <b>Actors:</b> {film.actors}</p>
                   <Button.Group vertical>
                     <Button
                       aria-label="Edit film"

@@ -8,6 +8,7 @@ import NotifComp from "./NotifComp";
 import Okbth from "./OkBth";
 import { useFilmContext } from "../context/LocalStorageContext";
 import ImageWithFallback from "../funcs/imgFallback";
+import * as mq from "../store/media-queries";
 
 function FilmInListComp({
   result,
@@ -26,6 +27,8 @@ function FilmInListComp({
   const handleAddButtonClick = () => {
     setOpen(true);
   };
+
+  const fontStyle = { fontSize: "1.1rem" };
 
   return (
     <>
@@ -61,18 +64,18 @@ function FilmInListComp({
                   <Item.Content>
                     <Item.Header
                       as="h2"
-                      style={{
-                        fontSize: "1.5rem",
-                        fontWeight: "bold",
+                      style={{ fontSize: "1.5rem", fontWeight: "bold" 
                       }}
                     >
                       {result.title}
                     </Item.Header>
                     <Item.Description>
-                      Description:{" "}
-                      {result.plot.length > 100
-                        ? result.plot.slice(0, 100) + " ..."
-                        : result.plot}{" "}
+                      <p style={fontStyle}>
+                        <b>Description:</b>{" "}
+                        {result.plot.length > 100
+                          ? result.plot.slice(0, 100) + " ..."
+                          : result.plot}{" "}
+                      </p>
                     </Item.Description>
                     <Item.Extra>
                       <Rating
@@ -80,8 +83,10 @@ function FilmInListComp({
                         defaultRating={result.imdbRating / 2}
                         maxRating={5}
                       />
-                      <p> Genre: {result.genre.join(", ")}</p>
-                      <p> {result.year} year</p>
+                      <p style={fontStyle}>
+                        <b> Genre:</b> {result.genre.join(", ")}
+                      </p>
+                      <p style={fontStyle}> {result.year} year</p>
                     </Item.Extra>
                   </Item.Content>
                 </Item>
