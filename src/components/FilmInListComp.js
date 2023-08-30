@@ -68,13 +68,13 @@ function FilmInListComp({
                     >
                       {result.title}
                     </Item.Header>
-                    <Item.Meta>
+                    <Item.Description>
                       Description:{" "}
                       {result.plot.length > 100
                         ? result.plot.slice(0, 100) + " ..."
                         : result.plot}{" "}
-                    </Item.Meta>
-                    <Item.Description>
+                    </Item.Description>
+                    <Item.Extra>
                       <Rating
                         icon="star"
                         defaultRating={result.imdbRating / 2}
@@ -82,7 +82,7 @@ function FilmInListComp({
                       />
                       <p> Genre: {result.genre.join(", ")}</p>
                       <p> {result.year} year</p>
-                    </Item.Description>
+                    </Item.Extra>
                   </Item.Content>
                 </Item>
               </Grid.Column>

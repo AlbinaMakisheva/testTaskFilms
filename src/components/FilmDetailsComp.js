@@ -52,8 +52,8 @@ function FilmDetailsComp({ film, updateDetails, filmdb, setFilmdb }) {
                 <Item.Header as="h3" style={{ fontWeight: "bold" }}>
                   {film.title}
                 </Item.Header>
-                <Item.Meta>Description: {film.plot} </Item.Meta>
-                <Item.Description>
+                <Item.Description>Description: {film.plot} </Item.Description>
+                <Item.Extra>
                   <Rating
                     icon="star"
                     defaultRating={film.imdbRating / 2}
@@ -68,7 +68,6 @@ function FilmDetailsComp({ film, updateDetails, filmdb, setFilmdb }) {
                   <p> County: {film.country}</p>
                   <p> Actors: {film.actors}</p>
                   <Button.Group vertical>
-                    
                     <Button
                       aria-label="Edit film"
                       attached="bottom"
@@ -83,7 +82,7 @@ function FilmDetailsComp({ film, updateDetails, filmdb, setFilmdb }) {
                     </Button>
                     <AddFilmButton film={film} />
                   </Button.Group>
-                </Item.Description>
+                </Item.Extra>
               </Item.Content>
             </Item>
           </Grid.Column>
