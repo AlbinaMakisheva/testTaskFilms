@@ -9,10 +9,6 @@ function AddFilmButton({ film }) {
   const [showAlert, setShowAlert] = useState(false);
   const [showNotif, setShowNotif] = useState(false);
 
-  const handleHideAlert = () => {
-    setShowAlert(false);
-  };
-
   const btnStyle = {
     backgroundColor: colors.green,
     color: colors.base,
@@ -46,10 +42,14 @@ function AddFilmButton({ film }) {
         />
       )}
       {showAlert && (
-        <Message error onDismiss={handleHideAlert} style={{ margin: "2%" }}>
-          <Message.Header>Error</Message.Header>
-          <p>Film is already added to your list.</p>
-        </Message>
+        <NotifComp
+          message="Film is already in your list"
+          header="Error"
+          open={showAlert}
+          button={false}
+          size="small"
+          changeOpen={() => setShowAlert(false)}
+        />
       )}
     </>
   );
