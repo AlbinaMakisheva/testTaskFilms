@@ -27,11 +27,25 @@ export class ResultComp extends Component {
 
     return total ? (
       <div>
-        <ActiveFilters />
-        <Sort values={this.sortValues} label={(cmp) => <> sorted by {cmp}</>} />
+        <span style={{ padding: "5vw" }}>
+          <ActiveFilters />
+          <Sort
+            values={this.sortValues}
+            label={(cmp) => <> sorted by {cmp}</>}
+          />
+        </span>
         <Grid style={{ padding: "5vh" }}>
           <ResultsList button={<AddFilmButton />} />
-          <AddNewFilm />
+          <div
+            style={{
+              position: "fixed",
+              top: "90%",
+              right: 0,
+              transform: "translateY(-50%)",
+            }}
+          >
+            <AddNewFilm />
+          </div>
         </Grid>
 
         <div>
@@ -52,7 +66,7 @@ export class ResultComp extends Component {
             </Grid.Column>
           </Grid>
 
-          <Grid centered textAlign="center">
+          <Grid centered textAlign="center" style={{ marginBottom: "5vh" }}>
             <Pagination />
           </Grid>
         </div>

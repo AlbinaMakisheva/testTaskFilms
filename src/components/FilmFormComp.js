@@ -3,6 +3,7 @@ import { Form } from "semantic-ui-react";
 import NotifComp from "./NotifComp";
 import Okbth from "./OkBth";
 import SearchFunc from "../funcs/search";
+import * as colors from "../store/colors";
 
 export function FilmFormComp({
   film,
@@ -28,22 +29,28 @@ export function FilmFormComp({
   const [filmImg, setFilmImg] = useState(film?.poster ?? "");
   const [filmImgImg, setFilmImgImg] = useState(film?.image ?? "");
 
+  const formStyle = {
+    padding: "3vw 5vw",
+    border: "solid lightgray 1px",
+    maxWidth: "70vh",
+    margin: "0 auto",
+    display: "flex",
+    flexDirection: "column",
+    gap: "5px",
+  };
+
   const handleSubmit = () => {
     if (
       !filmYear ||
       !filmGenre ||
       !filmName ||
       !agree ||
-      !/^\d{4}$/.test(filmYear)
+      !/^\d{4}$/.test(filmYear) ||
+      !/^[A-Za-z]+$/.test(filmGenre)
     ) {
       setInputErr(true);
       return;
     }
-
-    // if (!/^\d{4}$/.test(filmYear)) {
-    //   setInputErr(true)
-    //   return
-    // }
 
     const filmId =
       film?.id !== undefined ? film?.id : Math.floor(Math.random() * 1000) + 10;
@@ -58,14 +65,12 @@ export function FilmFormComp({
       image: filmImgImg,
     };
 
-    console.log(newFilm);
     const existingFilmIndex = filmdb.findIndex(
       (filmindb) => filmindb.id === filmId
     );
 
     if (existingFilmIndex !== -1) {
       const updatedFilmdb = [...filmdb];
-      console.log(updatedFilmdb);
       updatedFilmdb[existingFilmIndex] = newFilm;
       updateDetails(newFilm, updatedFilmdb);
     } else {
@@ -87,16 +92,15 @@ export function FilmFormComp({
 
   return (
     <>
-      <Form
-        style={{ padding: "5%", border: "solid lightgray 1px" }}
-        onSubmit={handleSubmit}
-      >
+      <Form style={formStyle} onSubmit={handleSubmit}>
         <Form.Group widths="equal">
           <Form.Input
             fluid
             label="Name"
             placeholder="Film name"
             value={filmName}
+            aria-label="Film Name"
+            aria-invalid={inputErr && !filmName}
             required
             onChange={(e) => {
               setFilmName(e.target.value);
@@ -129,6 +133,8 @@ export function FilmFormComp({
             label="Description"
             placeholder="Write interesting description of the film so we could take into account your application!"
             value={filmDesc}
+            aria-label="Film Description"
+            aria-invalid={inputErr && !filmDesc}
             required
             onChange={(e) => {
               setFilmDesc(e.target.value);
@@ -160,8 +166,8 @@ export function FilmFormComp({
         <Form.Button
           style={{
             margin: "20px",
-            backgroundColor: "#698474",
-            color: "white",
+            backgroundColor: colors.green,
+            color: colors.base,
           }}
         >
           Submit

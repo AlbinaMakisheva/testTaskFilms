@@ -2,6 +2,7 @@ import React from "react";
 import { Header, Button, Form } from "semantic-ui-react";
 import { BucketAggregation } from "react-searchkit";
 import { Link } from "react-router-dom";
+import * as colors from "../store/colors";
 
 export function FilterComp({ func }) {
   const genresAggregation = {
@@ -26,7 +27,7 @@ export function FilterComp({ func }) {
 
   return (
     <>
-      <Header as="h2" style={{ marginTop: "3vh", color: "white" }}>
+      <Header as="h2" style={{ marginTop: "3vh", color: colors.base }}>
         Filter
       </Header>
       <Form style={{ marginBottom: "3vh" }}>

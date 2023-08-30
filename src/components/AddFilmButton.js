@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { Message, Button, Icon } from "semantic-ui-react";
 import NotifComp from "./NotifComp";
+import { useFilmContext } from "../context/LocalStorageContext";
+import * as colors from "../store/colors";
 
 function AddFilmButton({ film }) {
   const [showAlert, setShowAlert] = useState(false);
@@ -12,28 +14,23 @@ function AddFilmButton({ film }) {
   };
 
   const btnStyle = {
-    backgroundColor: "#698474",
-    color: "white",
+    backgroundColor: colors.green,
+    color: colors.base,
+    minWidth: "40vw",
   };
 
-  const addFilm = () => {
-    const filmsarr = JSON.parse(localStorage.getItem("favfilms")) || [];
-
-    if (!filmsarr.some((existingFilm) => existingFilm.id === film.id)) {
-      filmsarr.push(film);
-      localStorage.setItem("favfilms", JSON.stringify(filmsarr));
-      setShowNotif(true);
-      setTimeout(() => {
-        setShowNotif(false);
-      }, 1000);
-    } else {
-      setShowAlert(true);
-    }
-  };
+  const { addFavfilm } = useFilmContext();
 
   return (
     <>
-      <Button style={btnStyle} attached="bottom" onClick={addFilm}>
+      <Button
+        style={btnStyle}
+        attached="bottom"
+        aria-label={`Add ${film.title} to my films`}
+        onClick={() => {
+          addFavfilm(film, setShowNotif, setShowAlert);
+        }}
+      >
         {" "}
         <Icon name="add" />
         Add to my films

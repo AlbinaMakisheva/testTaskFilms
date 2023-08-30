@@ -6,6 +6,7 @@ class LocalStorageSearchAPI {
 
   search = async (stateQuery) => {
     const payload = JSON.parse(localStorage.getItem(this.key)) || [];
+
     const { queryString, filters, sortBy, sortOrder, page, size } = stateQuery;
 
     const filterArrayToObject = (filters) => {

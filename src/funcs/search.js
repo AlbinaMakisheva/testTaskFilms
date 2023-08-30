@@ -82,8 +82,11 @@ function SearchFunc({ source, nameSearch, setVal }) {
           onResultSelect={(e, data) => {
             const selectedValue = data.result.title;
             if (selectedValue.startsWith("Create New:")) {
-              const newTitle = selectedValue.replace("Create New:", "").trim().toLowerCase()
-              .replace(/^\w/, (c) => c.toUpperCase());
+              const newTitle = selectedValue
+                .replace("Create New:", "")
+                .trim()
+                .toLowerCase()
+                .replace(/^\w/, (c) => c.toUpperCase());
               setVal(newTitle);
             } else {
               dispatch({

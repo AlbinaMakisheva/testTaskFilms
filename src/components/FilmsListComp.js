@@ -4,18 +4,17 @@ import { Grid, Header } from "semantic-ui-react";
 import { ResultsLoader, Error, EmptyResults, withState } from "react-searchkit";
 
 import { ResultComp } from "./ResultComp";
+import * as colors from "../store/colors";
 
 const OnResults = withState(ResultComp);
 
 const FilmsListContainer = ({ results }) => {
   return (
-    <Grid centered style={{ padding: "5vh", backgroundColor: "#fcf8f3" }}>
+    <Grid centered style={{ padding: "5vh", backgroundColor: colors.back }}>
       {results}
     </Grid>
   );
 };
-
-
 
 const resultsPerPageValues = [
   {
@@ -53,11 +52,11 @@ FilmsListContainer.defaultProps = {
 function FilmsListComp() {
   return (
     <>
-      <Header as="h1" textAlign="center">
+      <Header as="h1" textAlign="center" style={{ padding: "3vw" }}>
         Explore films
       </Header>
 
-      <Grid style={{ padding: "5vh", backgroundColor: "#fcf8f3" }}>
+      <Grid style={{ backgroundColor: colors.back }}>
         <ResultsLoader>
           <Error />
           <EmptyResults />

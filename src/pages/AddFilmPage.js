@@ -1,27 +1,24 @@
-import React, {useEffect, useState} from "react";
-import {MenuComp} from "../components/MenuComp";
-import {FilmFormComp} from "../components/FilmFormComp";
+import React from "react";
+import { MenuComp } from "../components/MenuComp";
+import { FilmFormComp } from "../components/FilmFormComp";
 import { Header } from "semantic-ui-react";
-import {withState} from 'react-searchkit'
+import { withState } from "react-searchkit";
+import { useFilmContext } from "../context/LocalStorageContext";
 
-const FilmForm= withState(FilmFormComp)
+const FilmForm = withState(FilmFormComp);
+
 function AddFilmPage() {
-
-
-  const [filmdb, setFilmdb] = useState(JSON.parse(localStorage.getItem('filmsdb')));
-
-  useEffect(() => {
-    localStorage.setItem("filmsdb", JSON.stringify(filmdb));
-    JSON.parse(window.localStorage.getItem('filmsdb'))
-  }, [filmdb]);
-
+  const { filmsdb, setFilmsdb } = useFilmContext();
 
   return (
     <>
       <div>
         <MenuComp />
-        <Header textAlign="center">Application form</Header>
-        <FilmForm setFilmdb={setFilmdb} filmdb={filmdb}/>
+        <Header textAlign="center" style={{ paddingBottom: "10px" }}>
+          Application form
+        </Header>
+
+        <FilmForm setFilmdb={setFilmsdb} filmdb={filmsdb} />
       </div>
     </>
   );

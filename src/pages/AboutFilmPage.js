@@ -1,35 +1,25 @@
-import React, {useState, useEffect} from "react";
-import {MenuComp} from "../components/MenuComp";
+import React from "react";
+import { MenuComp } from "../components/MenuComp";
 import FilmDetailsComp from "../components/FilmDetailsComp";
-
+import { useFilmContext } from "../context/LocalStorageContext";
 import { useParams } from "react-router-dom";
 
 function AboutFilmPage() {
-  const film = window.localStorage.getItem("filminfo");
-  const filmParsed = JSON.parse(film);
-
+  const { filmInfo, updateDetails, filmsdb, setFilmsdb } = useFilmContext();
   const params = useParams();
 
-  let filmData = filmParsed.id === parseInt(params.id);
-  const [filmdb, setFilmdb] = useState(JSON.parse(window.localStorage.getItem('filmsdb')));
-
-  useEffect(() => {
-    localStorage.setItem("filmsdb", JSON.stringify(filmdb));
-    JSON.parse(window.localStorage.getItem('filmsdb'))
-  }, [filmdb]);
-
-  const updateDetails=(newFilm, updatedFilmdb)=>{
-    filmData= window.localStorage.setItem("filminfo", JSON.stringify(newFilm));
-    window.localStorage.setItem("filmsdb", JSON.stringify(updatedFilmdb));
-    console.log(newFilm)
-    console.log(updatedFilmdb)
-  }
+  let filmData = filmInfo.id === parseInt(params.id);
 
   return filmData ? (
     <>
       <div>
         <MenuComp />
-        <FilmDetailsComp film={filmParsed} updateDetails={updateDetails} filmdb={filmdb} setFilmdb={setFilmdb}/>
+        <FilmDetailsComp
+          film={filmInfo}
+          updateDetails={updateDetails}
+          filmdb={filmsdb}
+          setFilmdb={setFilmsdb}
+        />
       </div>
     </>
   ) : null;

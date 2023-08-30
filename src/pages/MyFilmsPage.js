@@ -5,11 +5,11 @@ import FilmInListComp from "../components/FilmInListComp";
 import DelFilmButton from "../components/DelFilmButton";
 import { Link } from "react-router-dom";
 
+import { useFilmContext } from "../context/LocalStorageContext";
+import * as colors from "../store/colors";
+
 function MyFilmsPage() {
-  const favfilms = JSON.parse(localStorage.getItem("favfilms")) || [];
-  const setActive = (val) => {
-    window.localStorage.setItem("activemenu", JSON.stringify(val));
-  };
+  const { favoriteFilms, setActiveItem } = useFilmContext();
 
   return (
     <>
@@ -18,7 +18,7 @@ function MyFilmsPage() {
         My favorite films
       </Header>
 
-      {favfilms == "" ? (
+      {favoriteFilms == "" ? (
         <>
           <Grid textAlign="center" style={{ padding: "10vh" }}>
             <Grid.Column>
@@ -26,8 +26,8 @@ function MyFilmsPage() {
 
               <Link to="/">
                 <Button
-                  style={{ backgroundColor: "#fcf8f3" }}
-                  onClick={() => setActive("allFilms")}
+                  style={{ backgroundColor: colors.back }}
+                  onClick={() => setActiveItem("allFilms")}
                 >
                   Start search
                 </Button>
@@ -37,8 +37,8 @@ function MyFilmsPage() {
         </>
       ) : (
         <>
-          <Grid style={{ padding: "10vh", backgroundColor: "#fcf8f3" }}>
-            {favfilms.map((film, index) => (
+          <Grid style={{ padding: "10vh", backgroundColor: colors.back }}>
+            {favoriteFilms.map((film, index) => (
               <FilmInListComp
                 key={index}
                 result={film}

@@ -1,13 +1,14 @@
 import React from "react";
-import {MenuComp }from "../components/MenuComp";
+import { MenuComp } from "../components/MenuComp";
 import FilmsListComp from "../components/FilmsListComp";
-import {withState} from 'react-searchkit'
+import { withState } from "react-searchkit";
 
-const Menu= withState(MenuComp)
+const Menu = withState(MenuComp);
+
 function FilmList() {
   return (
     <>
-      <Menu/>
+      <Menu />
       <FilmsListComp />
     </>
   );

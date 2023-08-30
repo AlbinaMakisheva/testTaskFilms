@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect } from "react";
+import React from "react";
 import FilmList from "./pages/FilmList";
 import AddFilmPage from "./pages/AddFilmPage";
 import AboutFilmPage from "./pages/AboutFilmPage";
@@ -14,13 +14,20 @@ import {
   Button,
 } from "semantic-ui-react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import filmsdb from "./filmsdb.json";
 import searchApi from "./dbAPI";
 import { OverridableContext } from "react-overridable";
 import { ReactSearchKit } from "react-searchkit";
 import FilmInListComp from "./components/FilmInListComp";
+import { FilmProvider } from "./context/LocalStorageContext";
+import NotFoundPage from "./pages/NotFoundPage";
+import * as colors from "./store/colors";
+import filmsdb from "./filmsdb.json";
 
 function App() {
+  React.useEffect(() => {
+    window.localStorage.setItem("filmsdb", JSON.stringify(filmsdb));
+  }, []);
+
   const FilmsListContainer = ({ results }) => {
     return <Grid style={{ padding: "5vh" }}>{results}</Grid>;
   };
@@ -51,7 +58,7 @@ function App() {
 
   const MyCount = ({ totalResults }) => {
     return (
-      <Label style={{ backgroundColor: "#ffaaa5" }}>
+      <Label style={{ backgroundColor: colors.softred }}>
         {totalResults.toLocaleString("en-US")}
       </Label>
     );
@@ -72,7 +79,7 @@ function App() {
   }) => {
     const handleReset = () => {
       onInputChange("");
-      onBtnSearchClick(); // need to click 2 times??
+      onBtnSearchClick();
     };
 
     return (
@@ -90,7 +97,10 @@ function App() {
           }}
           value={queryString}
           icon={
-            <Button onClick={handleReset} style={{ backgroundColor: "white" }}>
+            <Button
+              onClick={handleReset}
+              style={{ backgroundColor: colors.base }}
+            >
               <Icon name="delete" />
             </Button>
           }
@@ -99,10 +109,6 @@ function App() {
       </div>
     );
   };
-
-  useEffect(() => {
-    window.localStorage.setItem("filmsdb", JSON.stringify(filmsdb));
-  }, []);
 
   const overriddenComponents = {
     "ResultsList.item": FilmInListComp,
@@ -125,14 +131,17 @@ function App() {
     <>
       <OverridableContext.Provider value={overriddenComponents}>
         <ReactSearchKit searchApi={searchApi} initialQueryState={initialState}>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<FilmList />} />
-              <Route path="/addfilm" element={<AddFilmPage />} />
-              <Route path="/about/:id" element={<AboutFilmPage />} />
-              <Route path="/myfilms" element={<MyFilmsPage />} />
-            </Routes>
-          </BrowserRouter>
+          <FilmProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<FilmList />} />
+                <Route path="/addfilm" element={<AddFilmPage />} />
+                <Route path="/about/:id" element={<AboutFilmPage />} />
+                <Route path="/myfilms" element={<MyFilmsPage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </BrowserRouter>
+          </FilmProvider>
         </ReactSearchKit>
       </OverridableContext.Provider>
     </>

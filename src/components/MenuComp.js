@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { FilterComp } from "./FilterComp";
 import { Menu, Grid, Sidebar, Button } from "semantic-ui-react";
 import { SearchBar, withState } from "react-searchkit";
+import { useFilmContext } from "../context/LocalStorageContext";
+import * as colors from "../store/colors";
 
 const Filter = withState(FilterComp);
 
@@ -22,31 +24,26 @@ function Overlay() {
 export const MenuComp = () => {
   const [visible, setVisible] = useState(false);
 
-  const [activeItem, setActiveItem] = useState(
-    JSON.parse(window.localStorage.getItem("activemenu"))
-  );
-
-  const favfilms = JSON.parse(localStorage.getItem("favfilms")) || [];
+  const { activeItem, setActiveItem, favoriteFilms } = useFilmContext();
 
   function toggleVisibility() {
     setVisible(!visible);
   }
 
   const activeMenuItemStyle = {
-    backgroundColor: "#ffaaa5",
-    color: "white",
+    backgroundColor: colors.back,
+    color: colors.base,
   };
   const inactiveMenuItemStyle = {
-    backgroundColor: "white",
+    backgroundColor: colors.base,
     color: "black",
   };
 
   function handleActive(e, { name }) {
     setActiveItem(name);
-    window.localStorage.setItem("activemenu", JSON.stringify(name));
   }
 
-  const colorSet = { backgroundColor: "#fcf8f3" };
+  const colorSet = { backgroundColor: colors.back };
 
   return (
     <>
@@ -96,7 +93,7 @@ export const MenuComp = () => {
                 }
               >
                 <Link to="/myfilms">
-                  <Button>My Films ({favfilms.length})</Button>
+                  <Button>My Films ({favoriteFilms.length})</Button>
                 </Link>
               </Menu.Item>
             </Button.Group>
@@ -105,7 +102,13 @@ export const MenuComp = () => {
       </Grid>
 
       <Menu attached="top" style={colorSet}>
-        <Button item icon="bars" basic onClick={toggleVisibility}></Button>
+        <Button
+          item
+          icon="bars"
+          basic
+          onClick={toggleVisibility}
+          aria-label="Toggle Menu"
+        ></Button>
         <Menu.Menu position="right">
           <SearchBar />
         </Menu.Menu>

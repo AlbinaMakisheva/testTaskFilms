@@ -1,24 +1,21 @@
 import React from "react";
 import { Button, Icon } from "semantic-ui-react";
+import { useFilmContext } from "../context/LocalStorageContext";
+import * as colors from "../store/colors";
 
 function DelFilmButton({ film }) {
-  const favfilms = JSON.parse(localStorage.getItem("favfilms")) || [];
+  const { deletefavfilm } = useFilmContext();
 
-  const deletefavfilm = () => {
-    const newfavfilms = favfilms.filter((delfilm) => delfilm.id !== film.id);
-    window.localStorage.setItem("favfilms", JSON.stringify(newfavfilms));
-    setTimeout(()=>{
-      window.location.reload(true)
-    }, 1500
-    )
-    
-  };
-
-  const btnStyle = { backgroundColor: "#be3144", color: "white" };
+  const btnStyle = { backgroundColor: colors.danger, color: colors.base };
 
   return (
     <>
-      <Button style={btnStyle} onClick={deletefavfilm} attached="bottom">
+      <Button
+        style={btnStyle}
+        onClick={() => deletefavfilm(film)}
+        attached="bottom"
+        aria-label="Delete film"
+      >
         {" "}
         <Icon name="trash" />
         Delete

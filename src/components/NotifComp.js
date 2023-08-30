@@ -9,8 +9,11 @@ function NotifComp({ message, changeOpen, open, button, size, header }) {
         onOpen={() => changeOpen(true)}
         open={open}
         size={size}
+        aria-labelledby="notif-modal-header"
+        closeIcon
+        closeOnDimmerClick={false}
       >
-        <Modal.Header>{header}</Modal.Header>
+        <Modal.Header id="notif-modal-header">{header}</Modal.Header>
         <Modal.Content>{message}</Modal.Content>
         <Modal.Actions>{button}</Modal.Actions>
       </Modal>

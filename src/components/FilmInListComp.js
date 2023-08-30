@@ -1,30 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Rating, Item, Grid, Image, Divider } from "semantic-ui-react";
+import { Rating, Item, Grid, Divider } from "semantic-ui-react";
 import { ReactSearchKit } from "react-searchkit";
 import searchApi from ".././dbAPI";
 import AddFilmButton from "./AddFilmButton";
 import NotifComp from "./NotifComp";
 import Okbth from "./OkBth";
-
-function ImageWithFallback({ src, fallbackSrc, alt, result }) {
-  const [imageSrc, setImageSrc] = React.useState(src);
-
-  const handleImageError = () => {
-    setImageSrc(fallbackSrc);
-  };
-
-  return result?.image ? (
-    <Image
-      src={result.image}
-      onError={handleImageError}
-      alt={alt}
-      margin="5vw"
-    />
-  ) : (
-    <Image src={imageSrc} onError={handleImageError} alt={alt} margin="5vw" />
-  );
-}
+import { useFilmContext } from "../context/LocalStorageContext";
+import ImageWithFallback from "../funcs/imgFallback";
 
 function FilmInListComp({
   result,
@@ -32,9 +15,10 @@ function FilmInListComp({
   message = "Film was successfully added",
   button = <AddFilmButton film={result} />,
 }) {
+  const { setFilmInfo } = useFilmContext();
   const navigate = useNavigate();
   const movetodetails = () => {
-    window.localStorage.setItem("filminfo", JSON.stringify(result));
+    setFilmInfo(result);
     navigate(`/about/${result.id}`);
   };
   const [open, setOpen] = useState(false);
@@ -48,11 +32,18 @@ function FilmInListComp({
       <ReactSearchKit searchApi={searchApi}>
         <Item key={index} style={{ margin: "15px" }}>
           <Grid
-            width={15}
-            height={13}
-            style={{ minWidth: "80vw", maxWidth: "80vw" }}
+            style={{ minWidth: "80vw", maxWidth: "80vw", minHeight: "25vh" }}
           >
-            <Grid.Row onClick={movetodetails}>
+            <Grid.Row
+              role="button"
+              tabIndex="0"
+              onClick={movetodetails}
+              onKeyPress={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  movetodetails();
+                }
+              }}
+            >
               <Grid.Column width={5}>
                 <ImageWithFallback
                   src={result.poster}
@@ -62,26 +53,34 @@ function FilmInListComp({
                 />
               </Grid.Column>
 
-              <Grid.Column width={10}>
-                <Item style={{ margin: "2vw" }}>
+              <Grid.Column
+                width={10}
+                style={{ display: "flex", flexDirection: "column", gap: "3vh" }}
+              >
+                <Item>
                   <Item.Content>
                     <Item.Header
+                      as="h2"
                       style={{
                         fontSize: "1.5rem",
                         fontWeight: "bold",
-                        margin: "1rem 0rem 1rem",
                       }}
                     >
                       {result.title}
                     </Item.Header>
-                    <Item.Meta>Description: {result.plot} </Item.Meta>
+                    <Item.Meta>
+                      Description:{" "}
+                      {result.plot.length > 100
+                        ? result.plot.slice(0, 100) + " ..."
+                        : result.plot}{" "}
+                    </Item.Meta>
                     <Item.Description>
                       <Rating
                         icon="star"
-                        defaultRating={result.imdbRating}
-                        maxRating={10}
+                        defaultRating={result.imdbRating / 2}
+                        maxRating={5}
                       />
-                      <p> Genre: {result.genre}</p>
+                      <p> Genre: {result.genre.join(", ")}</p>
                       <p> {result.year} year</p>
                     </Item.Description>
                   </Item.Content>
@@ -89,7 +88,18 @@ function FilmInListComp({
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <div onClick={handleAddButtonClick}>{button}</div>
+          <div
+            role="button"
+            tabIndex="0"
+            onClick={handleAddButtonClick}
+            onKeyPress={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                handleAddButtonClick();
+              }
+            }}
+          >
+            {button}
+          </div>
           <Divider />
 
           {open && (
